@@ -15,5 +15,24 @@ services:
     environment:
       - GATUS_PORT=8090
 
+  status-ui:
+    build:
+      context: ./site
+      dockerfile: Dockerfile
+    container_name: status-ui-kris
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      - gatus
+    environment:
+      - PORT=8092
+      - HOSTNAME=0.0.0.0
+      - GATUS_URL=http://127.0.0.1:8091
+    labels:
+      sg.owner: "kris"
+      sg.service-type: "nextjs"
+      sg.service-group: "monitoring"
+      sg.subdomain: "status.krisyotam.com"
+
 volumes:
   gatus-data:
